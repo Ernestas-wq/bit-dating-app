@@ -13,6 +13,8 @@ class LoginControllerTest extends TestCase
     /** @test */
     public function can_login()
     {
+        $this->withoutExceptionHandling();
+
         $user = User::factory()->create();
 
         $response = $this->json('POST', '/api/login', [
@@ -24,6 +26,7 @@ class LoginControllerTest extends TestCase
             ->assertJsonStructure(['data', 'message', 'token'])
             ->assertJson([
                 'data' => [
+                    'id'         => $user->id,
                     'email'      => $user->email,
                     'created_at' => $user->created_at->diffForHumans(),
                     'updated_at' => $user->updated_at->diffForHumans()
